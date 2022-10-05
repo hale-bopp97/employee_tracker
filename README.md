@@ -31,6 +31,6 @@ LinkedIn: https://www.linkedin.com/in/matthew-hendricks-029a25a8/
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
-![screen capture of index](https://github.com/hale-bopp97/note_taker/blob/main/Develop/public/assets/images/Capture1.JPG?raw=true)
+![screen capture of index](https://github.com/hale-bopp97/employee_tracker/blob/main/assets/images/Capture1.JPG?raw=true)
 
-![screen capture of notes page](https://github.com/hale-bopp97/express_note_taker/blob/main/public/assets/images/Capture3.JPG?raw=true)
+![screen capture of notes page](https://github.com/hale-bopp97/employee_tracker/blob/main/assets/images/Capture2.JPG?raw=true)
