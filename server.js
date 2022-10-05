@@ -1,8 +1,7 @@
 require('console.table');
-const inquirer = require('inquirer');
-// const fs       = require('fs');
-const mysql    = require('mysql2/promise'); //get the client...
 
+const inquirer = require('inquirer');
+const mysql    = require('mysql2/promise'); //get the client...
 
 let departments = [];
 let roles       = [];
@@ -17,9 +16,6 @@ async function testQuery() {
     // query database
     // const [rows, fields] = await connection.execute('SELECT * FROM `employee` WHERE `first_name` = ? AND `last_name` > ?', ['foo', 'F']);
     const [row, fields] = await connection.query('SELECT * FROM employee;');
-
-    // console.log(row);
-    // console.log(fields);
 
 }
 
@@ -65,11 +61,13 @@ async function addDepartment() {
 
 async function addRole() {
 
-    const [row] = await connection.query('SELECT * FROM department');
-    let department = row;
+    const [row]        = await connection.query('SELECT * FROM department');
+    let department     = row;
     let departmentList = department.map(({id, name}) => ({
+        
         name: name, 
         value: id
+    
     }));
 
     let addRoleQuestion = [
@@ -100,7 +98,7 @@ async function addRole() {
         },
 
     ]
-    
+
     inquirer.prompt(addRoleQuestion).then(async res => {
 
         console.log(res);
@@ -109,6 +107,80 @@ async function addRole() {
         mainMenu();
 
     }) 
+
+}
+
+async function addEmployee() {
+
+    const [row1]   = await connection.query('SELECT * FROM roles');
+    let roles     = row1;
+    let rolesList = roles.map(({title, salary, department_id}) => ({
+
+        title: title,
+        salary: salary,
+        value: department_id
+
+    }));
+
+    const [row2]      = await connection.query('SELECT * FROM employee');
+    let employees     = row2;
+    let employeeList  = employees.map(({first_name, last_name, role_id, manager_id}) => ({
+
+        first_name: first_name,
+        last_name: last_name,
+        role_id: role_id,
+        value: manager_id
+
+    }));
+
+    // console.log(roles);
+    // console.log(rolesList);
+
+    let addEmployeeQuestion = [
+
+        {
+
+            type: 'input',
+            name: 'first_name',
+            message: 'First name: '
+
+        },
+
+        {
+
+            type: 'input',
+            name: 'last_name',
+            message: 'Last name: '
+
+        },
+
+        {
+
+            type: 'list',
+            name: 'role_id',
+            message: 'Role ID: ',
+            choices: rolesList
+
+        },
+
+        {
+
+            type: 'list',
+            name: 'manager_id',
+            message: 'Manager ID: ',
+            choices: employeeList
+
+        },
+
+    ]
+
+    inquirer.prompt(addEmployeeQuestion).then(async res => {
+
+        console.log(res);
+        const [row] = await connection.query('INSERT INTO employee SET ?', res, );
+        mainMenu();
+
+    })
 
 }
 
@@ -189,7 +261,7 @@ function mainMenu() {
             
             case 'Add an employee':
             
-                console.log('aae');
+                addEmployee();
                 break;
             
             case 'Update an employee role':
@@ -211,11 +283,9 @@ function departmentMenu() {
 
 async function init() {
 
-    
     // create the connection
     connection = await mysql.createConnection({host:'localhost', user: 'root', password: 'password', database: 'employeeDb'});
-    // testQuery();
-    // getAllDepartments();
+
     mainMenu();
 
 }
