@@ -34,3 +34,5 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 ![screen capture of index](https://github.com/hale-bopp97/employee_tracker/blob/main/assets/images/Capture1.JPG?raw=true)
 
 ![screen capture of notes page](https://github.com/hale-bopp97/employee_tracker/blob/main/assets/images/Capture2.JPG?raw=true)
+
+![](https://github.com/hale-bopp97/employee_tracker/blob/main/assets/images/Untitled_%20Oct%208,%202022%208_16%20PM.gif?raw=true)
