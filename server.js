@@ -11,13 +11,13 @@ const PORT = process.env.PORT || 3001;
 
 let connection;
 
-async function testQuery() {
+// async function testQuery() {
     
-    // query database
-    // const [rows, fields] = await connection.execute('SELECT * FROM `employee` WHERE `first_name` = ? AND `last_name` > ?', ['foo', 'F']);
-    const [row, fields] = await connection.query('SELECT * FROM employee;');
+//     // query database
+//     // const [rows, fields] = await connection.execute('SELECT * FROM `employee` WHERE `first_name` = ? AND `last_name` > ?', ['foo', 'F']);
+//     const [row, fields] = await connection.query('SELECT * FROM employee;');
 
-}
+// }
 
 async function getAllDepartments() {
 
@@ -74,24 +74,24 @@ async function addRole() {
         
         {
         
-            type: "input",
-            name: "title",
+            type:    "input",
+            name:    "title",
             message: "Role name: "
 
         },
 
         {
 
-            type: "input",
-            name: "salary",
+            type:    "input",
+            name:    "salary",
             message: "Salary: "
 
         },
 
         {
             
-            type: "list",
-            name: "department_id",
+            type:    "list",
+            name:    "department_id",
             message: "Department ID: ",
             choices: departmentList
 
@@ -112,7 +112,7 @@ async function addRole() {
 
 async function addEmployee() {
 
-    const [row1]   = await connection.query('SELECT * FROM roles');
+    const [row1]  = await connection.query('SELECT * FROM roles');
     let roles     = row1;
     let rolesList = roles.map(({title, salary, department_id}) => ({
 
@@ -133,31 +133,28 @@ async function addEmployee() {
 
     }));
 
-    // console.log(roles);
-    // console.log(rolesList);
-
     let addEmployeeQuestion = [
 
         {
 
-            type: 'input',
-            name: 'first_name',
+            type:    'input',
+            name:    'first_name',
             message: 'First name: '
 
         },
 
         {
 
-            type: 'input',
-            name: 'last_name',
+            type:    'input',
+            name:    'last_name',
             message: 'Last name: '
 
         },
 
         {
 
-            type: 'list',
-            name: 'role_id',
+            type:    'list',
+            name:    'role_id',
             message: 'Role ID: ',
             choices: rolesList
 
@@ -165,8 +162,8 @@ async function addEmployee() {
 
         {
 
-            type: 'list',
-            name: 'manager_id',
+            type:    'list',
+            name:    'manager_id',
             message: 'Manager ID: ',
             choices: employeeList
 
@@ -178,6 +175,55 @@ async function addEmployee() {
 
         console.log(res);
         const [row] = await connection.query('INSERT INTO employee SET ?', res, );
+        mainMenu();
+
+    })
+
+}
+
+async function updateEmployee() {
+
+    const [row1]  = await connection.query('SELECT * FROM roles');
+    let roles     = row1;
+    let rolesList = roles.map(({department_id, title, salary, id}) => ({
+
+        value: department_id,
+        name: `${department_id} ${title} ${salary} ${id}`
+
+    }));
+
+    const [row2]      = await connection.query('SELECT * FROM employee');
+    let employees     = row2;
+    let employeeList  = employees.map(({id, first_name, last_name, role_id, manager_id}) => ({
+
+        value: id,
+        name: `${first_name} ${last_name}`
+
+    }));
+
+    let updateEmployeeQuestion = [
+
+        {
+            type: 'list',
+            name: 'id',
+            message: 'Select an employee: ',
+            choices: employeeList
+        },
+
+        {
+
+            type:    'list',
+            name:    'role_id',
+            message: 'Select a role: ',
+            choices: rolesList
+
+        },
+
+    ]
+
+    inquirer.prompt(updateEmployeeQuestion).then(async res => {
+
+        const [row] = await connection.query(`UPDATE employee SET role_id = ${res.role_id} WHERE id = ${res.id}`);
         mainMenu();
 
     })
@@ -266,7 +312,7 @@ function mainMenu() {
             
             case 'Update an employee role':
             
-                console.log('uaer');
+                updateEmployee();
                 break; 
 
         }
